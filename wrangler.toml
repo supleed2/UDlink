@@ -1,0 +1,6 @@
+name = "udlink"
+main = "src/index.ts"
+compatibility_date = "2022-09-07"
+
+[vars]
+API_URL = "https://resolve.unstoppabledomains.com/domains/"
