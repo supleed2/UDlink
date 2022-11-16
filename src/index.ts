@@ -41,7 +41,9 @@ export default {
 		const url: URL = new URL(request.url); // Convert to URL object
 		const gateway: string | undefined = url.hostname.match(/(\w*).udl.ink/)?.[1]; // Get potential gateway
 		const [domain, ...paths]: string[] = url.pathname.split("/").slice(1); // Get requested targets
-		const [sld, tld]: string[] = domain.split("."); // Extract SLD and TLD from first target
+		let domains: string[] = domain.split("."); // Split requested tld by . separator
+		const tld = domains.pop(); // Get TLD
+		const sld = domains.join("."); // Join SLDs together
 		if (domain == "about" || domain == "") {
 			return new Response(html(
 				"About UD Link",
