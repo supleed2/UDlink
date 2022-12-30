@@ -68,6 +68,24 @@ export default {
 				},
 				status: 200
 			});
+		} else if (gateway === "os" && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to Opensea listing if gateway is "os"
+			const { networkId, registry, namehash }: { networkId: number, registry: string, namehash: string }
+				= await fetch(environment["API_URL" as keyof Env] + sld + "." + tld, {
+					method: 'GET',
+					headers: { Authorization: `Bearer ${environment["API_KEY" as keyof Env]}` },
+					// @ts-expect-error
+				}).then(response => response.json()).then(json => json.meta);
+			if (namehash === null) {
+				return Response.redirect("https://udl.ink/", 303);
+			}
+			return new Response(null, {
+				headers: {
+					'location': `https://opensea.io/assets/${networkId == 1 ? "ethereum" : "matic"}/${registry}/${BigInt(namehash)}`,
+					'content-type': 'text/html;charset=UTF-8',
+					'referrer-policy': 'no-referrer'
+				},
+				status: 303
+			});
 		} else if (gateway !== undefined && !validGateways.has(gateway)) { // If invalid gateway, 400 Bad Request, with valid gateway options
 			return new Response(html(
 				"UDlink: Invalid Gateway",
@@ -125,8 +143,8 @@ export default {
 					'referrer-policy': 'no-referrer'
 				},
 				status: 303
-			})
-		} else {// Valid domain hash, no gateway selected, return embedded iframe
+			});
+		} else {// Valid domain hash, no gateway selected, use default gateway
 			return new Response(null, {
 				headers: {
 					'location': `https://${CID.parse(domainHash).toV1().toString() + gatewayUrls.cf + "/" + paths.join("/")}`,
@@ -134,28 +152,9 @@ export default {
 					'referrer-policy': 'no-referrer'
 				},
 				status: 303
-			})
-			return new Response(html(
-				`UDlink: ${sld}.${tld}`,
-				`<iframe
-					src="https://${CID.parse(domainHash).toV1().toString() + gatewayUrls.cf + "/" + paths.join("/")}"
-					title="embedded-website"
-					referrerpolicy="no-referrer"
-					sandbox="allow-scripts allow-no-referrer allow-popups"
-					style="border: none; height: 100vh; width: 100vw;">
-				Your browser does not support iframes, please try again with another browser</iframe>`,
-				`style="margin: 0; display: flex;"`
-			), {
-				headers: {
-					'content-type': 'text/html;charset=UTF-8',
-					'referrer-policy': 'no-referrer'
-				},
-				status: 200
 			});
 		}
 	},
 };
-
-// For testing paths: IdeasAndConcepts.nft
 
 // https://docs.unstoppabledomains.com/developer-toolkit/resolution-integration-methods/resolution-service/endpoints/get-records-for-a-domain/
