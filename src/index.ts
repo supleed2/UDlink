@@ -19,15 +19,20 @@ const html = (title: string, body: string, bodyStyle?: string) => `<!DOCTYPE htm
 	<body ${bodyStyle}>
 		${body}
 	</body>
+	<footer>
+		<p>Note: UDlink will continue to work as is, but development on new features is slow at the moment. Thank you for understanding</p>
+	</footer>
 </html>`;
-const validTLDs = new Set(["bitcoin", "blockchain", "coin", "crypto", "dao", "nft", "wallet", "x", "zil", "888"]);
-const validGateways = new Set(["cf", "gwc", "dweb", "nfts", "w3s"]);
+const validTLDs = new Set(["bitcoin", "blockchain", "coin", "crypto", "dao", "hi", "klever", "nft", "wallet", "x", "zil", "888"]);
+const validGateways = new Set(["cf", "gwc", "dweb", "nfts", "w3s", "4evl", "jole"]);
 const gatewayUrls = {
 	"cf": ".ipfs.cf-ipfs.com", // Cloudflare
 	"gwc": ".ipfs.ipfs-gateway.cloud", // IPFS-Gateway.cloud
 	"dweb": ".ipfs.dweb.link", // dweb.link
 	"nfts": ".ipfs.nftstorage.link", // NFT.Storage
 	"w3s": ".ipfs.w3s.link", // Web3.Storage
+	"4evl": ".ipfs.4everland.io", // 4everland
+	"jole": ".ipfs.ipfs.joaoleitao.org", // Joao Leitao (Individual)
 }; // Updated using origin-separated gateways listed at https://ipfs.github.io/public-gateway-checker/
 
 export interface Env { }
