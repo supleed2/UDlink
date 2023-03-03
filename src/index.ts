@@ -23,7 +23,10 @@ const html = (title: string, body: string, bodyStyle?: string) => `<!DOCTYPE htm
 	</body>
 	<footer>
 		<p>Note: UDlink will continue to work as is, but development on new features is slow at the moment. Thank you for understanding</p>
-		<a href="#"><img onclick=logBadgeClick() id="badge-button" style="width:240px;height:53px" src="https://static.alchemyapi.io/images/marketing/badge.png" alt="Alchemy Supercharged" /></a>
+		<a href="#"><picture>
+			<source srcset="https://static.alchemyapi.io/images/marketing/badgeLight.png" media="(prefers-color-scheme: light)" />
+			<img onclick=logBadgeClick() id="badge-button" style="width:240px;height:53px" src="https://static.alchemyapi.io/images/marketing/badge.png" alt="Alchemy Supercharged" />
+		</picture></a>
 	</footer>
 </html>`;
 const validTLDs = new Set(["bitcoin", "blockchain", "coin", "crypto", "dao", "hi", "klever", "nft", "wallet", "x", "zil", "888"]);
