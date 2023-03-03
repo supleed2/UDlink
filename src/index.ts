@@ -50,28 +50,13 @@ export default {
 		const tld = domains.pop(); // Get TLD
 		const sld = domains.join("."); // Join SLDs together
 		if (domain == "about" || domain == "") {
-			return new Response(html(
-				"About UD Link",
-				`<h1>Hi, thanks for trying out UDlink :D</h1>
-				<p>It's currently in an extremely alpha state, but feel free to use it</p>
-				<p>There are 2 main ways of using UDlink, the currently recommended method is via the Cloudflare redirect, eg: <a href="https://cf.udl.ink/8bitsquid.x">https://cf.udl.ink/8bitsquid.x</a></p>
-				<p>The final goal is to have an embedded version: <a href="https://udl.ink/8bitsquid.x">https://udl.ink/8bitsquid.x</a>, which allows for the underlying hash to be hidden, improving the user experience</p>
-				<p>The currently supported gateways are:</p>
-				<table>
-					<tr><th>Cloudflare</th><th><code>cf.udl.ink/domain.tld</code><th></tr>
-					<tr><th>Gateway.Cloud</th><th><code>gwc.udl.ink/domain.tld</code><th></tr>
-					<tr><th>Dweb</th><th><code>dweb.udl.ink/domain.tld</code><th></tr>
-					<tr><th>NFT Storage</th><th><code>nfts.udl.ink/domain.tld</code><th></tr>
-					<tr><th>Web3 Storage</th><th><code>w3s.udl.ink/domain.tld</code><th></tr>
-				</table>
-				<p>This list was made using gateways supporting origin isolation, as listed at <a href="https://ipfs.github.io/public-gateway-checker/">https://ipfs.github.io/public-gateway-checker/</a></p>`,
-				"https://udl.ink/about"
-			), {
+			return new Response(null, {
 				headers: {
+					'location': "https://docs.udl.ink/",
 					'content-type': 'text/html;charset=UTF-8',
 					'referrer-policy': 'no-referrer'
 				},
-				status: 200
+				status: 303
 			});
 		} else if (gateway === "os" && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to Opensea listing if gateway is "os"
 			const { networkId, registry, namehash }: { networkId: number, registry: string, namehash: string }
