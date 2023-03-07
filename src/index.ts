@@ -64,19 +64,23 @@ export default {
 				},
 				status: 303
 			});
-		} else if (gateway === "os" && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to Opensea listing if gateway is "os"
-			const { networkId, registry, namehash }: { networkId: number, registry: string, namehash: string }
+		} else if ((gateway === "os" || gateway === "scan") && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to Opensea listing if gateway is "os" or to Etherscan/Polygonscan if gateway is "scan"
+			const { networkId, registry, tokenId }: { networkId: number, registry: string, tokenId: string }
 				= await fetch(environment["API_URL" as keyof Env] + sld + "." + tld, {
 					method: 'GET',
 					headers: { Authorization: `Bearer ${environment["API_KEY" as keyof Env]}` },
 					// @ts-expect-error
 				}).then(response => response.json()).then(json => json.meta);
-			if (namehash === null) {
+			if (tokenId === null) {
 				return Response.redirect("https://udl.ink/", 303);
 			}
 			return new Response(null, {
 				headers: {
-					'location': `https://opensea.io/assets/${networkId == 1 ? "ethereum" : "matic"}/${registry}/${BigInt(namehash)}`,
+					'location': (gateway === "os")
+						? (`https://opensea.io/assets/${networkId == 1 ? "ethereum" : "matic"}/${registry}/${tokenId}`)
+						: ((networkId == 1)
+							? `https://etherscan.io/nft/${registry}/${tokenId}`
+							: `https://polygonscan.com/token/${registry}?a=${tokenId}`),
 					'content-type': 'text/html;charset=UTF-8',
 					'referrer-policy': 'no-referrer'
 				},
