@@ -1,6 +1,6 @@
 import { CID } from './cid'
 
-const html = (title: string, body: string, bodyStyle?: string) => `<!DOCTYPE html>
+const html = (title: string, body: string, infoUrl: string) => `<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>${title}</title>
@@ -18,8 +18,9 @@ const html = (title: string, body: string, bodyStyle?: string) => `<!DOCTYPE htm
 			table { text-align: left; }
 		</style>
 	</head>
-	<body ${bodyStyle}>
+	<body>
 		${body}
+		<p>For more info, check out the <a href="${infoUrl}">UDlink docs</a></p>
 	</body>
 	<footer>
 		<p>Note: UDlink will continue to work as is, but development on new features is slow at the moment. Thank you for understanding</p>
@@ -92,7 +93,7 @@ export default {
 				`<h1>Invalid IPFS Gatway selected for redirect</h1>
 				<p>Requested Gateway Code: ${gateway}</p>
 				<p>Valid Gateway Codes include: ${Array.from(validGateways).join(", ")}</p>`,
-				"https://udl.ink/invalid-gateway"
+				"https://docs.udl.ink/invalid-gateway"
 			), {
 				headers: {
 					'content-type': 'text/html;charset=UTF-8',
@@ -106,7 +107,7 @@ export default {
 				`<h1>Invalid Unstoppable Domains TLD</h1>
 				<p>Requested Domain: ${domain}</p>
 				<p>Valid TLDs include: ${Array.from(validTLDs).join(", ")}</p>`,
-				"https://udl.ink/invalid-tld"
+				"https://docs.udl.ink/invalid-tld"
 			), {
 				headers: {
 					'content-type': 'text/html;charset=UTF-8',
@@ -127,7 +128,7 @@ export default {
 				<p>Requested Domain: ${sld}.${tld}</p>
 				<p>You can check your domain records <a href="https://unstoppabledomains.com/manage?page=website&domain=${sld}.${tld}">here</a></p>
 				<p>If you just made the change to your domain, it may take a few minutes for the new hash to be recognised.</p>`,
-				"https://udl.ink/missing-hash"
+				"https://docs.udl.ink/missing-hash"
 			), {
 				headers: {
 					'content-type': 'text/html;charset=UTF-8',
