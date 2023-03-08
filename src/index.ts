@@ -65,6 +65,8 @@ export default {
 				},
 				status: 303
 			});
+		} else if (gateway === "me" && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to ud.me page if gateway is "me"
+			return Response.redirect(`https://ud.me/${sld}.${tld}`, 303);
 		} else if ((gateway === "os" || gateway === "scan") && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to Opensea listing if gateway is "os" or to Etherscan/Polygonscan if gateway is "scan"
 			const { networkId, registry, tokenId }: { networkId: number, registry: string, tokenId: string }
 				= await fetch(environment["API_URL" as keyof Env] + sld + "." + tld, {
