@@ -31,15 +31,13 @@ const html = (title: string, body: string, infoUrl: string) => `<!DOCTYPE html>
 	</footer>
 </html>`;
 const validTLDs = new Set(["888", "anime", "bitcoin", "blockchain", "coin", "crypto", "dao", "go", "hi", "klever", "kresus", "manga", "nft", "polygon", "wallet", "x", "zil"]);
-const validGateways = new Set(["cf", "gwc", "dweb", "nfts", "w3s", "4evl", "jole"]);
+const validGateways = new Set(["cf", "dweb", "nfts", "w3s", "4evl"]);
 const gatewayUrls = {
 	"cf": ".ipfs.cf-ipfs.com", // Cloudflare
-	"gwc": ".ipfs.ipfs-gateway.cloud", // IPFS-Gateway.cloud
 	"dweb": ".ipfs.dweb.link", // dweb.link
 	"nfts": ".ipfs.nftstorage.link", // NFT.Storage
 	"w3s": ".ipfs.w3s.link", // Web3.Storage
 	"4evl": ".ipfs.4everland.io", // 4everland
-	"jole": ".ipfs.ipfs.joaoleitao.org", // Joao Leitao (Individual)
 }; // Updated using origin-separated gateways listed at https://ipfs.github.io/public-gateway-checker/
 
 export interface Env { }
