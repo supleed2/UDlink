@@ -30,7 +30,7 @@ const html = (title: string, body: string, infoUrl: string) => `<!DOCTYPE html>
 		</picture></a>
 	</footer>
 </html>`;
-const validTLDs = new Set(["bitcoin", "blockchain", "coin", "crypto", "dao", "hi", "klever", "nft", "wallet", "x", "zil", "888"]);
+const validTLDs = new Set(["888", "anime", "bitcoin", "blockchain", "coin", "crypto", "dao", "go", "hi", "klever", "kresus", "manga", "nft", "polygon", "wallet", "x", "zil"]);
 const validGateways = new Set(["cf", "gwc", "dweb", "nfts", "w3s", "4evl", "jole"]);
 const gatewayUrls = {
 	"cf": ".ipfs.cf-ipfs.com", // Cloudflare
