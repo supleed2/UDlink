@@ -2,6 +2,7 @@ import { CID } from './cid'
 
 const validTLDs = new Set(["888", "anime", "bitcoin", "blockchain", "coin", "crypto", "dao", "go", "hi", "klever", "kresus", "manga", "nft", "polygon", "wallet", "x", "zil"]);
 const validGateways = new Set(["cf", "dweb", "nfts", "w3s", "4evl"]);
+const validSites = new Set(["os", "osp", "scan", "eden", "tofu", "rari"]);
 const gatewayUrls = {
 	"cf": ".ipfs.cf-ipfs.com", // Cloudflare
 	"dweb": ".ipfs.dweb.link", // dweb.link
@@ -33,7 +34,25 @@ export default {
 				},
 				status: 303
 			});
-		} else if (gateway === "me" && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to ud.me page if gateway is "me"
+		} else if (tld === undefined || !validTLDs.has(tld.toLowerCase())) { // If invalid TLD, 400 Bad Request, with valid TLD options
+			return new Response(null, {
+				headers: {
+					'location': `https://docs.udl.ink/error?e=tld&domain=${domain}`,
+					'content-type': 'text/html;charset=UTF-8',
+					'referrer-policy': 'no-referrer'
+				},
+				status: 303
+			});
+		} else if (gateway !== undefined && !validGateways.has(gateway) && !validSites.has(gateway)) { // If invalid gateway, 400 Bad Request, with valid gateway options
+			return new Response(null, {
+				headers: {
+					'location': `https://docs.udl.ink/error?e=gateway&gateway=${gateway}`,
+					'content-type': 'text/html;charset=UTF-8',
+					'referrer-policy': 'no-referrer'
+				},
+				status: 303
+			});
+		} else if (gateway === "me") { // Redirect to ud.me page if gateway is "me"
 			return new Response(null, {
 				headers: {
 					'location': `https://ud.me/${sld}.${tld}`,
@@ -42,7 +61,7 @@ export default {
 				},
 				status: 303
 			});
-		} else if ((gateway === "os" || gateway === "scan") && tld !== undefined && validTLDs.has(tld.toLowerCase())) { // Redirect to Opensea listing if gateway is "os" or to Etherscan/Polygonscan if gateway is "scan"
+		} else if (gateway !== undefined && validSites.has(gateway)) { // Redirect to listing / scanner page
 			const { networkId, registry, tokenId }: { networkId: number, registry: string, tokenId: string }
 				= await fetch(environment["API_URL" as keyof Env] + sld + "." + tld, {
 					method: 'GET',
@@ -59,31 +78,25 @@ export default {
 					status: 303
 				});
 			}
+			let url;
+			if (gateway === "os") {
+				url = `https://opensea.io/assets/${networkId == 1 ? "ethereum" : "matic"}/${registry}/${tokenId}`;
+			} else if (gateway === "osp") {
+				url = `https://pro.opensea.io/nft/${networkId == 1 ? "ethereum" : "polygon"}/${registry}/${tokenId}`;
+			} else if (gateway === "eden") {
+				url = `https://magiceden.io/item-details/${networkId == 1 ? "ethereum" : "polygon"}/${registry}/${tokenId}`;
+			} else if (gateway === "tofu") {
+				url = `https://tofunft.com/nft/${networkId == 1 ? "eth" : "polygon"}/${registry}/${tokenId}`;
+			} else if (gateway === "rari") {
+				url = `https://rarible.com/token/${networkId == 1 ? "" : "polygon/"}${registry}:${tokenId}`;
+			} else if (networkId == 1) {
+				url = `https://etherscan.io/nft/${registry}/${tokenId}`;
+			} else {
+				url = `https://polygonscan.com/token/${registry}?a=${tokenId}`;
+			}
 			return new Response(null, {
 				headers: {
-					'location': (gateway === "os")
-						? (`https://opensea.io/assets/${networkId == 1 ? "ethereum" : "matic"}/${registry}/${tokenId}`)
-						: ((networkId == 1)
-							? `https://etherscan.io/nft/${registry}/${tokenId}`
-							: `https://polygonscan.com/token/${registry}?a=${tokenId}`),
-					'content-type': 'text/html;charset=UTF-8',
-					'referrer-policy': 'no-referrer'
-				},
-				status: 303
-			});
-		} else if (gateway !== undefined && !validGateways.has(gateway)) { // If invalid gateway, 400 Bad Request, with valid gateway options
-			return new Response(null, {
-				headers: {
-					'location': `https://docs.udl.ink/error?e=gateway&gateway=${gateway}`,
-					'content-type': 'text/html;charset=UTF-8',
-					'referrer-policy': 'no-referrer'
-				},
-				status: 303
-			});
-		} else if (tld === undefined || !validTLDs.has(tld.toLowerCase())) { // If invalid TLD, 400 Bad Request, with valid TLD options
-			return new Response(null, {
-				headers: {
-					'location': `https://docs.udl.ink/error?e=tld&domain=${domain}`,
+					'location': url,
 					'content-type': 'text/html;charset=UTF-8',
 					'referrer-policy': 'no-referrer'
 				},
