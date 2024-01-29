@@ -1,6 +1,6 @@
 import { CID } from './cid'
 
-const validTLDs = new Set(["888", "anime", "bitcoin", "blockchain", "coin", "crypto", "dao", "go", "hi", "klever", "kresus", "manga", "nft", "polygon", "wallet", "x", "zil"]);
+const validTLDs = new Set(["x","polygon","nft","crypto","blockchain","bitcoin","dao","888","wallet","binanceus","hi","klever","kresus","anime","manga","go","altimist","unstoppable","zil","eth"]);
 const validGateways = new Set(["cf", "dweb", "nfts", "w3s", "4evl"]);
 const validSites = new Set(["os", "osp", "scan", "eden", "tofu", "rari"]);
 const gatewayUrls = {
