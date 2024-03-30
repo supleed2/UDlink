@@ -1,4 +1,5 @@
 import { CID } from './cid'
+import { Client as LibsqlClient, createClient } from "@libsql/client/web";
 
 const validTLDs = new Set(["x","polygon","nft","crypto","blockchain","bitcoin","dao","888","wallet","binanceus","hi","klever","kresus","anime","manga","go","altimist","pudgy","unstoppable","austin","bitget","zil","eth"]);
 const validGateways = new Set(["cf", "dweb", "nfts", "w3s", "4evl"]);
@@ -11,7 +12,27 @@ const gatewayUrls = {
 	"4evl": ".ipfs.4everland.io", // 4everland
 }; // Updated using origin-separated gateways listed at https://ipfs.github.io/public-gateway-checker/
 
-export interface Env { }
+export interface Env {
+	API_KEY?: string;
+	API_URL?: string;
+	TURSO_URL?: string;
+	TURSO_AUTH_TOKEN?: string;
+}
+
+function builtLibsqlClient(environment: Env): LibsqlClient | undefined {
+	const url = environment.TURSO_URL?.trim();
+	const authToken = environment.TURSO_AUTH_TOKEN?.trim();
+	if (url === undefined || authToken === undefined) { return undefined; }
+	return createClient({ url, authToken });
+}
+
+async function countRequest(client: LibsqlClient): Promise<void> {
+	try {
+		await client.execute('update request_count set count = count + 1 where id = 1');
+	} catch (error) {
+		console.error('Error executing SQL query:', error);
+	}
+}
 
 export default {
 	async fetch(
@@ -25,6 +46,8 @@ export default {
 		let domains: string[] = domain.split("."); // Split requested tld by . separator
 		const tld = domains.pop(); // Get TLD
 		const sld = domains.join("."); // Join SLDs together
+		const client = builtLibsqlClient(environment); // Get libsql client, connected to database
+		if (client !== undefined) { await countRequest(client); } // Increment request count
 		if (domain == "about" || domain == "") {
 			return new Response(null, {
 				headers: {
@@ -63,9 +86,9 @@ export default {
 			});
 		} else if (gateway !== undefined && validSites.has(gateway)) { // Redirect to listing / scanner page
 			const { networkId, registry, tokenId }: { networkId: number, registry: string, tokenId: string }
-				= await fetch(environment["API_URL" as keyof Env] + sld + "." + tld, {
+				= await fetch(environment.API_URL + sld + "." + tld, {
 					method: 'GET',
-					headers: { Authorization: `Bearer ${environment["API_KEY" as keyof Env]}` },
+					headers: { Authorization: `Bearer ${environment.API_KEY}` },
 					// @ts-expect-error
 				}).then(response => response.json()).then(json => json.meta);
 			if (tokenId === null) {
@@ -103,9 +126,9 @@ export default {
 				status: 303
 			});
 		}
-		const domainHash: string | undefined = await fetch(environment["API_URL" as keyof Env] + sld + "." + tld, {
+		const domainHash: string | undefined = await fetch(environment.API_URL + sld + "." + tld, {
 			method: 'GET',
-			headers: { Authorization: `Bearer ${environment["API_KEY" as keyof Env]}` },
+			headers: { Authorization: `Bearer ${environment.API_KEY}` },
 			// @ts-expect-error
 		}).then(response => response.json()).then(json => json.records?.["ipfs.html.value"] || undefined);
 		if (domainHash === undefined) { // If no domain hash, 404 Not Found

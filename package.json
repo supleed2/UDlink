@@ -1,6 +1,9 @@
 {
   "name": "udlink",
   "version": "0.0.0",
+  "dependencies": {
+    "@libsql/client": "^0.6.0"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240320.1",
     "typescript": "^5.4.3",
