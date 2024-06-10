@@ -3,4 +3,4 @@ main = "src/index.ts"
 compatibility_date = "2024-03-29"
 
 [vars]
-API_URL = "https://resolve.unstoppabledomains.com/domains/"
+API_URL = "https://api.unstoppabledomains.com/resolve/domains/"
