@@ -66,19 +66,19 @@ export default {
 				},
 				status: 303
 			});
-		} else if (gateway !== undefined && !validGateways.has(gateway) && !validSites.has(gateway)) { // If invalid gateway, 400 Bad Request, with valid gateway options
+		} else if (gateway === "me") { // Redirect to ud.me page if gateway is "me"
 			return new Response(null, {
 				headers: {
-					'location': `https://docs.udl.ink/error?e=gateway&gateway=${gateway}`,
+					'location': `https://ud.me/${sld}.${tld}`,
 					'content-type': 'text/html;charset=UTF-8',
 					'referrer-policy': 'no-referrer'
 				},
 				status: 303
 			});
-		} else if (gateway === "me") { // Redirect to ud.me page if gateway is "me"
+		} else if (gateway !== undefined && !validGateways.has(gateway) && !validSites.has(gateway)) { // If invalid gateway, 400 Bad Request, with valid gateway options
 			return new Response(null, {
 				headers: {
-					'location': `https://ud.me/${sld}.${tld}`,
+					'location': `https://docs.udl.ink/error?e=gateway&gateway=${gateway}`,
 					'content-type': 'text/html;charset=UTF-8',
 					'referrer-policy': 'no-referrer'
 				},
