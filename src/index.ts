@@ -1,7 +1,7 @@
 import { CID } from './cid'
 import { Client as LibsqlClient, createClient } from "@libsql/client/web";
 
-const validTLDs = new Set(["crypto","bitcoin","blockchain","unstoppable","dao","nft","888","wallet","x","klever","hi","kresus","polygon","anime","manga","binanceus","go","altimist","pudgy","austin","bitget","pog","clay","witg","metropolis","wrkx","secret","raiin","stepn","zil","com","ca","eth"]);
+const validTLDs = new Set(["crypto","bitcoin","blockchain","unstoppable","dao","nft","888","wallet","x","klever","hi","kresus","polygon","anime","manga","binanceus","go","altimist","pudgy","austin","bitget","pog","clay","witg","metropolis","wrkx","secret","raiin","stepn","kryptic","zil","com","ca","eth"]);
 const validGateways = new Set(["cf", "dweb", "nfts", "w3s", "4evl"]);
 const validSites = new Set(["os", "osp", "scan", "eden", "tofu", "rari"]);
 const gatewayUrls = {
