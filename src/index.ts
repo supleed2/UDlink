@@ -1,7 +1,7 @@
 import { CID } from "./cid"
 import { Client as LibsqlClient, createClient } from "@libsql/client/web";
 
-const validTLDs = new Set(["888","altimist","anime","austin","bald","benji","binanceus","bitcoin","bitget","blockchain","ca","chomp","clay","com","crypto","dao","dfz","dream","eth","ethermail","farms","go","hi","klever","kresus","kryptic","lfg","manga","metropolis","mumu","net","nft","org","pog","polygon","propykeys","pudgy","pw","raiin","secret","smobler","stepn","tball","ubu","unstoppable","wallet","witg","wrkx","x","zil"]);
+const validTLDs = new Set(["888","altimist","anime","austin","bald","benji","binanceus","bitcoin","bitget","blockchain","ca","chomp","clay","com","crypto","dao","dfz","dream","eth","ethermail","farms","go","hi","klever","kresus","kryptic","lfg","manga","metropolis","mumu","net","nft","org","pog","polygon","propykeys","pudgy","pw","raiin","secret","smobler","stepn","tball","ubu","unstoppable","wallet","witg","wrkx","x","xmr","zil"]);
 const validGateways = new Set(["dweb", "nfts", "w3s", "4el", "arag", "hbin"]);
 const validSites = new Set(["os", "osp", "scan", "eden", "tofu", "rari"]);
 const gatewayUrls = {
