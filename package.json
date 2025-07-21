@@ -2,12 +2,12 @@
   "name": "udlink",
   "version": "0.0.0",
   "dependencies": {
-    "@libsql/client": "^0.7.0"
+    "@libsql/client": "^0.15.10"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240620.0",
-    "typescript": "^5.5.3",
-    "wrangler": "^3.63.1"
+    "@cloudflare/workers-types": "^4.20250719.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.25.0"
   },
   "private": true,
   "scripts": {
